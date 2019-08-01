@@ -1,0 +1,11 @@
+{
+  "name": "newrelic-code-challenge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Andras Matzon",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "webpack": "^4.38.0"
+  }
+}
