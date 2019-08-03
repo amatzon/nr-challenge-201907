@@ -1,5 +1,6 @@
 const template = (data: {[key: string]: any}) => `
     <h1>${data.title}</h1>
+    <p>${data.email}</p>
 `;
 
 export class Header {
