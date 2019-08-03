@@ -1,42 +1,39 @@
+import { Component } from '@/app/components/Component/Component';
 import { Header } from '@/app/components/Header/Header'
 import { HostBoard } from '@/app/components/HostBoard/HostBoard'
-
 import './app.scss';
 
+const template = function () {
+    return `
+        <section>
+            <div id="app-header"></div>
+            <div id="app-content"></div>
+            <div id="app-footer"></div>
+        </section>
+    `;
+};
 
-export class App {
-    private MOUNT: string = 'app';
-    private components: {[key: string]: any} = {};
+export class App extends Component {
+    public template = template;
 
-    constructor() {
-        this.components.HostBoard = new HostBoard();
+    constructor(options: {[key: string]: any}) {
+        super(options);
+        this.childComponents = {
+            HostBoard: new HostBoard(),
+        }
     }
 
-    public init(): void {
-        this.mount();
+    init(): void {
+        this.render();
 
         this.loadUserData().then(
             (response) => {
-                this.components.Header = new Header({email: response.data.email});
-                this.components.Header.init();
+                this.childComponents.Header = new Header({email: response.data.email});
+                this.childComponents.Header.init();
             }
         );
 
-        this.initComponents();
-    }
-
-    private mount(): void {
-        const appElement = document.getElementById(this.MOUNT);
-        if (!appElement) {
-            throw new Error(`App init failed! Cannot find element #${this.MOUNT} to mount the app to.`);
-        }
-        appElement.insertAdjacentHTML('afterbegin', this.template());
-    }
-
-    private initComponents(): void {
-        Object.keys(this.components).forEach((componentName) => {
-            this.components[componentName].init();
-        })
+        this.initChildComponents();
     }
 
     private loadUserData(): Promise<any> {
@@ -49,15 +46,5 @@ export class App {
                 }
             });
         });
-    }
-
-    private template() {
-        return `
-            <section>
-                <div id="app-header"></div>
-                <div id="app-content"</div>
-                <div id="app-footer"></div>
-            </section>
-        `;
     }
 }

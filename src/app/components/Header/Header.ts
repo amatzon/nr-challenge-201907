@@ -1,23 +1,25 @@
-const template = (data: {[key: string]: any}) => `
-    <h1>${data.title}</h1>
-    <p>${data.email}</p>
-`;
+import { Component } from '@/app/components/Component/Component';
 
-export class Header {
-    private MOUNT: string = 'app-header';
+const template = function (data: {[key: string]: any}) {
+    return `
+        <h1>${data.title}</h1>
+        <p>${data.email}</p>
+    `;
+};
 
+export class Header extends Component {
+    public mountPoint: string = 'app-header';
+    public template = template;
+    private title: string = 'Apps by Hosts';
     private templateData: {[key: string]: any} = {};
     
     constructor(options: {[key: string]: any} = {}) {
+        super(options);
         this.templateData.email = options.email;
-        this.templateData.title = 'Apps by Hosts'
+        this.templateData.title = this.title;
     }
 
     init() {
-        const app: HTMLElement | null = document.getElementById('app');
-        if (app) {
-            app.insertAdjacentHTML('afterbegin', template(this.templateData));
-        }   
-        console.log('Header init');
+        this.render(this.templateData);
     }
 }
