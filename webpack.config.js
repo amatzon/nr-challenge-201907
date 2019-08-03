@@ -35,6 +35,9 @@ const getConfig = () => {
         },
         resolve: {
             extensions: ['.ts', '.js', '.scss'],
+            alias: {
+                '@': path.resolve(__dirname, 'src/'),
+            },
         },
         plugins: [
             new HtmlWebpackPlugin({
