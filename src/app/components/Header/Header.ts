@@ -3,14 +3,19 @@ const template = (data: {[key: string]: any}) => `
 `;
 
 export class Header {
-    
-    constructor() {}
+    private MOUNT: string = 'app-header';
 
-    init(data: {[key: string]: any} = {}) {
-        data.title = 'TEST';
+    private templateData: {[key: string]: any} = {};
+    
+    constructor(options: {[key: string]: any} = {}) {
+        this.templateData.email = options.email;
+        this.templateData.title = 'Apps by Hosts'
+    }
+
+    init() {
         const app: HTMLElement | null = document.getElementById('app');
         if (app) {
-            app.insertAdjacentHTML('afterbegin', template(data))
+            app.insertAdjacentHTML('afterbegin', template(this.templateData));
         }   
         console.log('Header init');
     }

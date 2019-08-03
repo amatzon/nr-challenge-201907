@@ -1,36 +1,66 @@
 import { Application } from '@/app/types/Application'
 import { Header } from '@/app/components/Header/Header'
-import { HostList } from '@/app/components/HostList/HostList'
+import { HostBoard } from '@/app/components/HostBoard/HostBoard'
 
 import './app.scss';
+
 
 export class App {
     private MOUNT: string = 'app';
     private JSON_DATA: string = '/data/host-app-data.json';
     private data: Application[] = [];
-    private components: any[] = [];
+    private components: {[key: string]: any} = {};
 
     constructor() {
-        this.components.push(
-            new Header(),
-        )
+        this.components.HostBoard = new HostBoard();
     }
 
     public init(): void {
+        this.mount();
+
+        this.loadUserData().then(
+            (response) => {
+                this.components.Header = new Header({email: response.data.email});
+                this.components.Header.init();
+            }
+        );
+
         this.initComponents();
+
         this.loadData().then(
             (response) => {
                 this.data = this.parseData(response.data);
+                this.components.HostBoard.init({data: this.data});
             },
             (response) => {
                 console.error(response);
             }
-        )
+        );
     }
 
-    private initComponents() {
-        this.components.forEach((component) => {
-            component.init();
+    private mount(): void {
+        const appElement = document.getElementById(this.MOUNT);
+        if (!appElement) {
+            throw new Error(`App init failed! Cannot find element #${this.MOUNT} to mount the app to.`);
+        }
+        appElement.insertAdjacentHTML('afterbegin', this.template());
+    }
+
+    private initComponents(): void {
+        Object.keys(this.components).forEach((componentName) => {
+            this.components[componentName].init();
+        })
+    }
+
+    private loadUserData(): Promise<any> {
+        return new Promise((resolve) => {
+            resolve({
+                status: 200,
+                statusText: 'OK',
+                data: {
+                    email: 'averylongemailaddress@companyname.com'
+                }
+            });
         });
     }
 
@@ -77,5 +107,15 @@ export class App {
             app.id = this.generateId();
             return app;
         })
+    }
+
+    private template() {
+        return `
+            <section>
+                <div id="app-header"></div>
+                <div id="app-content"</div>
+                <div id="app-footer"></div>
+            </section>
+        `;
     }
 }
