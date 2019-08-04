@@ -1,5 +1,5 @@
 import { Component } from '@/app/components/Component/Component';
-import './header.scss';
+import './style.scss';
 
 const template = function (data: {[key: string]: any}) {
     return `

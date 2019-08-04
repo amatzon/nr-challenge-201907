@@ -1,7 +1,7 @@
 import { Component } from '@/app/components/Component/Component';
 import { Header } from '@/app/components/Header/Header'
 import { HostBoard } from '@/app/components/HostBoard/HostBoard'
-import './app.scss';
+import './style.scss';
 
 const template = function (data: {[key: string]: any}) {
     return `

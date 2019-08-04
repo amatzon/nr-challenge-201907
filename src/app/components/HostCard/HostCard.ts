@@ -1,4 +1,5 @@
-import { Card } from "@/app/components/Card/Card";
+import { Card } from '@/app/components/Card/Card';
+import './style.scss';
 
 const template = function (data: {[key: string]: any}) {
     return `
