@@ -18,9 +18,8 @@ export class Component {
         this.templateData.id = this.getID();
     }
 
-    init() {
+    init(options: {[key: string]: any} = {}) {
         this.render(this.templateData);
-        // this.initChildComponents();
     }
 
     setTemplate(template: (() => string)): void {
@@ -46,10 +45,4 @@ export class Component {
     getID(): number {
         return this.id;
     }
-
-    // initChildComponents(): void {
-    //     Object.keys(this.childComponents).forEach((componentName) => {
-    //         this.childComponents[componentName].init();
-    //     })
-    // }
 }

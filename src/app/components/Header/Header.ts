@@ -3,30 +3,34 @@ import './header.scss';
 
 const template = function (data: {[key: string]: any}) {
     return `
-        <header class="c-header" data-id="${data.id}">
-            <div class="c-header__titleContainer">
-                <h1 class="c-header__title">${data.title} <small class="c-header__subtitle">for user ${data.email}</small></h1>
+        <header class="header" id="Header_${data.id}">
+            <div class="header__container">
+                <h1 class="header__title">
+                    <span class="header__titlemain">${data.title}</span>
+                    <small class="header__subtitle">${data.subtitle}</small>
+                </h1>
             </div>
-            <div class="c-header__controls">
-                <input type="checkbox" />
+            <div class="header__controls">
+                <label>
+                    <input type="checkbox" />
+                    <span>Show as list</span>
+                </label>
             </div>
         </header>
     `;
 };
 
 export class Header extends Component {
-    public mountPoint: string = 'app-header';
     public template = template;
-    private title: string = 'Apps by Host';
-    // private templateData: {[key: string]: any} = {};
+    private title: string = 'Title goes here';
     
     constructor(options: {[key: string]: any} = {}) {
         super(options);
-        this.templateData.email = options.email;
-        this.templateData.title = this.title;
     }
 
-    // init() {
-    //     this.render(this.templateData);
-    // }
+    init(options: {[key: string]: any} = {}) {
+        this.templateData.title = options.title || this.title;
+        this.templateData.subtitle = options.subtitle;
+        this.render(this.templateData);
+    }
 }

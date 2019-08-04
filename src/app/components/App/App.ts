@@ -5,10 +5,10 @@ import './app.scss';
 
 const template = function (data: {[key: string]: any}) {
     return `
-        <section class="app" data-id="${data.id}">
-            <div id="app-header"></div>
-            <div id="app-content"></div>
-            <div id="app-footer"></div>
+        <section class="app" id="App_${data.id}">
+            <div class="app__header" id="AppHeader_${data.id}"></div>
+            <main class="app__content" id="AppContent_${data.id}"></main>
+            <div class="app__footer" id="AppFooter_${data.id}"></div>
         </section>
     `;
 };
@@ -20,7 +20,8 @@ export class App extends Component {
     constructor(options: {[key: string]: any}) {
         super(options);
         this.childComponents = {
-            HostBoard: new HostBoard(),
+            Header: new Header({selector: `AppHeader_${this.id}`}),
+            HostBoard: new HostBoard({selector: `AppContent_${this.id}`}),
         }
     }
 
@@ -29,12 +30,12 @@ export class App extends Component {
 
         this.loadUserData().then(
             (response) => {
-                this.childComponents.Header = new Header({email: response.data.email});
-                this.childComponents.Header.init();
+                this.childComponents.Header.init({
+                    title: response.data.title,
+                    subtitle: `for user ${response.data.email}`,
+                });
             }
         );
-
-        console.log('init', this.id)
 
         this.childComponents.HostBoard.init();
     }
@@ -45,6 +46,7 @@ export class App extends Component {
                 status: 200,
                 statusText: 'OK',
                 data: {
+                    title: 'Apps by Host',
                     email: 'averylongemailaddress@companyname.com'
                 }
             });

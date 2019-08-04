@@ -1,25 +1,35 @@
-.c-header {
+.header {
     display: flex;
 }
 
-.c-header__titleContainer {
+.header__container {
     display: inline-flex;
     width: 90%;
 }
 
-.c-header__controls {
+.header__controls {
     display: inline-flex;
     width: 10%;
+    white-space: nowrap;
+    text-align: right;
+
+    & > label {
+        display: block;
+    }
 }
 
-.c-header__title {
+.header__title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 1.8rem;
 }
 
-.c-header__subtitle {
-    font-size: 1.8rem;
+.header__titlemain {
+    font-size: 3.5rem;
+}
+
+.header__subtitle {
     font-weight: normal;
     line-height: inherit;
 }

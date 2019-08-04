@@ -2,14 +2,12 @@ import { Card } from "@/app/components/Card/Card";
 
 const template = function (data: {[key: string]: any}) {
     return `
-        <li>
-            <article>
-                <h2>${data.title}</h2>
-                <div>
-                    ${data.list}
-                </div>
-            </article>
-        </li>
+        <article class="card card--host" id="HostCard_${data.id}">
+            <h2 class="card__title">${data.title}</h2>
+            <div class="card__content" id="HostCardContent_${data.id}">
+                ${data.list}
+            </div>
+        </article>
     `;
 };
 

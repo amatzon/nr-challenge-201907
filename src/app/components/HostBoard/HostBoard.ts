@@ -5,16 +5,15 @@ import { HostCard } from '@/app/components/HostCard/HostCard';
 
 const template = function(data: {[key: string]: any}) {
     return `
-        <div>
-            <ul id="component-hostboard-list" data-id="${data.id}">
-            </ul>
+        <div class="board board--host" id="Board_${data.id}">
+            <div id="component-hostboard-list" data-id="${data.id}">
+            </div>
         <//div>
     `;
 };
 
 export class HostBoard extends Board {
     public template = template;
-    public mountPoint: string = 'app-content';
     private jsonPath: string = '/data/host-app-data.json';
     private data: Application[] = [];
     private hosts: string[] = [];
@@ -38,7 +37,7 @@ export class HostBoard extends Board {
         this.hosts = Object.keys(this.appsByHosts);
 
         this.render(this.templateData);
-        
+
         this.hosts.forEach((hostName) => {
             const hostCard = new HostCard({title: hostName, list: this.appsByHosts[hostName]});
             this.childComponents = Array().concat(this.childComponents, hostCard);

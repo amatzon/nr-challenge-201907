@@ -1,13 +1,12 @@
-import { Component } from "@/app/components/Component/Component";
+import { Component } from '@/app/components/Component/Component';
+import './style.scss';
 
 const template = function (data: {[key: string]: any}) {
     return `
-        <li>
-            <article>
-                <h2>${data.title}</h2>
-                <div>TE</div>
-            </article>
-        </li>
+        <article class="card" id="Card_${data.id}">
+            <h2 class="card__title">${data.title}</h2>
+            <div class="card__content" id="CardContent_${data.id}">TE</div>
+        </article>
     `;
 };
 
