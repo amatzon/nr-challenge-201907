@@ -1,0 +1,25 @@
+.c-header {
+    display: flex;
+}
+
+.c-header__titleContainer {
+    display: inline-flex;
+    width: 90%;
+}
+
+.c-header__controls {
+    display: inline-flex;
+    width: 10%;
+}
+
+.c-header__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.c-header__subtitle {
+    font-size: 1.8rem;
+    font-weight: normal;
+    line-height: inherit;
+}

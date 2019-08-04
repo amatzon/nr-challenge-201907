@@ -1,24 +1,26 @@
 import { genetateID } from '@/app/helpers/helpers';
 
 const template = function (data: {[key: string]: any}) {
-    return `<div></div>`;
+    return `<div data-id="${data.id}"></div>`;
 };
 
 export class Component {
     public mountPoint: string = '';
     public template = template;
     public id: number = 0;
-    public childComponents: {[key: string]: Component} = {};
+    public templateData: {[key: string]: any} = {};
+    // public childComponents: {[key: string]: Component} = {};
 
     constructor(options: {[key: string]: any}) {
         this.setMount(options.selector);
         this.setTemplate(options.template);
         this.setID();
+        this.templateData.id = this.getID();
     }
 
     init() {
-        this.render({});
-        this.initChildComponents();
+        this.render(this.templateData);
+        // this.initChildComponents();
     }
 
     setTemplate(template: (() => string)): void {
@@ -45,9 +47,9 @@ export class Component {
         return this.id;
     }
 
-    initChildComponents(): void {
-        Object.keys(this.childComponents).forEach((componentName) => {
-            this.childComponents[componentName].init();
-        })
-    }
+    // initChildComponents(): void {
+    //     Object.keys(this.childComponents).forEach((componentName) => {
+    //         this.childComponents[componentName].init();
+    //     })
+    // }
 }

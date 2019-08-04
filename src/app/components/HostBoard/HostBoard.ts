@@ -1,19 +1,32 @@
 import { Application } from '@/app/types/Application';
 
 import { Board } from '@/app/components/Board/Board';
+import { HostCard } from '@/app/components/HostCard/HostCard';
+
+const template = function(data: {[key: string]: any}) {
+    return `
+        <div>
+            <ul id="component-hostboard-list" data-id="${data.id}">
+            </ul>
+        <//div>
+    `;
+};
 
 export class HostBoard extends Board {
-    private JSON_PATH: string = '/data/host-app-data.json';
+    public template = template;
+    public mountPoint: string = 'app-content';
+    private jsonPath: string = '/data/host-app-data.json';
     private data: Application[] = [];
     private hosts: string[] = [];
     private appsByHosts: {[key: string]: Application[]} = {};
+    private childComponents: any[] = [];
 
     constructor(options: {[key: string]: any} = {}) {
         super(options);
     }
 
     init() {
-        this.loadData(this.JSON_PATH).then(
+        this.loadData(this.jsonPath).then(
             (response) => this.onSuccess(response),
             (response) => this.onError(response)
         );
@@ -24,8 +37,19 @@ export class HostBoard extends Board {
         this.appsByHosts = this.prepareHosts(this.data);
         this.hosts = Object.keys(this.appsByHosts);
 
-        console.log('hosts', this.hosts)
-        console.log('appsByHosts', this.appsByHosts)
+        this.render(this.templateData);
+        
+        this.hosts.forEach((hostName) => {
+            const hostCard = new HostCard({title: hostName, list: this.appsByHosts[hostName]});
+            this.childComponents = Array().concat(this.childComponents, hostCard);
+            hostCard.init();
+        });
+
+        // console.log('hosts', this.hosts);
+        // console.log('appsByHosts', this.appsByHosts);
+        console.log('this.childComponents', this.childComponents)
+
+        
     }
 
     onError(response: {[key: string]: any}): void {
