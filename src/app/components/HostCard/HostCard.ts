@@ -24,7 +24,5 @@ export class HostCard extends Card {
 
         this.render(this.templateData);
         this.initList(this.list, `HostCardList_${this.id}`, 5);
-
-        console.log('this.list', this.list)
     }
 }

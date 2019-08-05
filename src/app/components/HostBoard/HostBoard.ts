@@ -15,7 +15,7 @@ export class HostBoard extends Board {
     public template = template;
     private jsonPath: string = '/data/host-app-data.json';
     private data: Application[] = [];
-    private hosts: string[] = [];
+    private hostsNames: string[] = [];
     private appsByHosts: {[key: string]: Application[]} = {};
     private topAppsByHosts: {[key: string]: Application[]} = {};
     private childComponents: any[] = [];
@@ -34,11 +34,11 @@ export class HostBoard extends Board {
     onSuccess(response: {[key: string]: any}): void {
         this.data = this.parseData(response.data);
         this.appsByHosts = this.prepareHosts(this.data);
-        this.hosts = Object.keys(this.appsByHosts);
+        this.hostsNames = Object.keys(this.appsByHosts);
 
         this.render(this.templateData);
 
-        this.hosts.forEach((hostName) => {
+        this.hostsNames.forEach((hostName) => {
             const topApps = this.filterTopApps(this.appsByHosts[hostName]);
             const hostCard = new HostCard({selector: `HostBoardCards_${this.id}`});
 
@@ -57,10 +57,11 @@ export class HostBoard extends Board {
 
     private exposeMethods() {
         (window as any).getTopAppsByHost = (hostName: string) => this.getTopAppsByHost(hostName);
+        (window as any).removeAppFromHosts = (appName: string) => this.removeAppFromHosts(appName);
     }
 
     private getTopAppsByHost(hostName: string = '') {
-        if (!hostName) {
+        if (!hostName || typeof hostName !== 'string') {
             console.error(`Can't retrieve top apps! Please provide a host name.`);
             return;
         }
@@ -73,6 +74,36 @@ export class HostBoard extends Board {
         this.topAppsByHosts[hostName].forEach((app: Application, i) => {
             console.log(`${i+1}. ${app.name}\n`);
         });
+    }
+
+    private removeAppFromHosts(appName: string): void {
+        if (!appName || typeof appName !== 'string') {
+            console.error(`Please provide the name of the application to remove.`);
+            return;
+        }
+
+        // Let's check if the removed app is in our top lists and update them accordingly
+        // There's no need to iterate over the full lists
+        const foundInHosts: string[] = [];
+        this.hostsNames.forEach((hostName) => {
+            const hostApps = this.topAppsByHosts[hostName];
+            let appIndex = null;
+            hostApps.forEach((app: Application, i) => {
+                if (app.name === appName) {
+                    foundInHosts.push(hostName);
+                    appIndex = i;
+                }
+            });
+            if (appIndex !== null) {
+                hostApps.splice(appIndex, 1);
+            }
+        });
+
+        if (foundInHosts.length > 0) {
+            console.info(`Removed successfully from these hosts: \n${foundInHosts.join('\n')}.`);
+        }
+
+        console.info(`Could not find any app with the name ${appName}.`);
     }
 
     private parseData(data: []) {
