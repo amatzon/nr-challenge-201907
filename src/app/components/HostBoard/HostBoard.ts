@@ -5,9 +5,8 @@ import { HostCard } from '@/app/components/HostCard/HostCard';
 
 const template = function(data: {[key: string]: any}) {
     return `
-        <div class="board board--host" id="Board_${data.id}">
-            <div id="component-hostboard-list" data-id="${data.id}">
-            </div>
+        <div class="board board--host" id="HostBoard_${data.id}">
+            <div class="board__cards" id="HostBoardCards_${data.id}"></div>
         <//div>
     `;
 };
@@ -39,9 +38,10 @@ export class HostBoard extends Board {
         this.render(this.templateData);
 
         this.hosts.forEach((hostName) => {
-            const hostCard = new HostCard({title: hostName, list: this.appsByHosts[hostName]});
+            const topApps = this.filterTopApps(this.appsByHosts[hostName]);
+            const hostCard = new HostCard({selector: `HostBoardCards_${this.id}`});
             this.childComponents = Array().concat(this.childComponents, hostCard);
-            hostCard.init();
+            hostCard.init({title: hostName, list: topApps});
         });
 
         // console.log('hosts', this.hosts);
@@ -81,5 +81,13 @@ export class HostBoard extends Board {
         }
 
         return appsByHosts;
+    }
+
+    private filterTopApps(apps: Application[]) {
+        const appsOrdered = [...apps];
+        appsOrdered.sort((a, b) => {
+            return b.apdex - a.apdex
+        })
+        return appsOrdered.slice(0, 25);
     }
 }

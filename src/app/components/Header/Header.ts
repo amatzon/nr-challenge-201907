@@ -22,7 +22,7 @@ const template = function (data: {[key: string]: any}) {
 
 export class Header extends Component {
     public template = template;
-    private title: string = 'Title goes here';
+    private title: string = 'Header Title Goes Here';
     
     constructor(options: {[key: string]: any} = {}) {
         super(options);
