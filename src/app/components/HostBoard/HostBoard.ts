@@ -15,10 +15,10 @@ export class HostBoard extends Board {
     public template = template;
     private jsonPath: string = '/data/host-app-data.json';
     private data: Application[] = [];
-    private hostsNames: string[] = [];
+    private hostNames: string[] = [];
     private appsByHosts: {[key: string]: Application[]} = {};
     private topAppsByHosts: {[key: string]: Application[]} = {};
-    private childComponents: any[] = [];
+    private childComponents: {[key: string]: HostCard} = {};
 
     constructor(options: {[key: string]: any} = {}) {
         super(options);
@@ -34,16 +34,16 @@ export class HostBoard extends Board {
     onSuccess(response: {[key: string]: any}): void {
         this.data = this.parseData(response.data);
         this.appsByHosts = this.prepareHosts(this.data);
-        this.hostsNames = Object.keys(this.appsByHosts);
+        this.hostNames = Object.keys(this.appsByHosts);
 
         this.render(this.templateData);
 
-        this.hostsNames.forEach((hostName) => {
+        this.hostNames.forEach((hostName) => {
             const topApps = this.filterTopApps(this.appsByHosts[hostName]);
             const hostCard = new HostCard({selector: `HostBoardCards_${this.id}`});
 
             this.topAppsByHosts[hostName] = topApps;
-            this.childComponents = Array().concat(this.childComponents, hostCard);
+            this.childComponents[`Child_${hostName}`] = hostCard;
             hostCard.init({title: hostName, list: topApps});
         });
 
@@ -85,7 +85,7 @@ export class HostBoard extends Board {
         // Let's check if the removed app is in our top lists and update them accordingly
         // There's no need to iterate over the full lists
         const foundInHosts: string[] = [];
-        this.hostsNames.forEach((hostName) => {
+        this.hostNames.forEach((hostName) => {
             let hostApps = this.appsByHosts[hostName];
             let appIndex = null;
             hostApps.forEach((app: Application, i) => {
@@ -99,6 +99,7 @@ export class HostBoard extends Board {
                 hostApps.splice(appIndex, 1);
                 // Update top list
                 this.topAppsByHosts[hostName] = this.filterTopApps(hostApps);
+                this.updateCardList(hostName, this.topAppsByHosts[hostName]);
             }
         });
 
@@ -108,6 +109,11 @@ export class HostBoard extends Board {
         }
 
         console.info(`Could not find any app with the name ${appName}.`);
+    }
+
+    private updateCardList(hostName: string, list: Application[]) {
+        const hostCard = this.childComponents[`Child_${hostName}`];
+        if (hostCard) hostCard.updateList(list);
     }
 
     private parseData(data: []) {

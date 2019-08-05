@@ -1,3 +1,4 @@
+import { Application } from '@/app/types/Application';
 import { Card } from '@/app/components/Card/Card';
 import { ApplicationItem } from '@/app/components/ApplicationItem/ApplicationItem';
 import './style.scss';
@@ -27,7 +28,11 @@ export class HostCard extends Card {
         this.initList(this.list, `HostCardList_${this.id}`, ApplicationItem, 5);
     }
 
-    removeItem(appName: string) {
-        console.log('remove appname')
+    updateList(list: Application[]) {
+        this.list = list;
+        this.childComponents.forEach((appItem) => {
+            appItem.removeListeners();
+        })
+        this.initList(this.list, `HostCardList_${this.id}`, ApplicationItem, 5);
     }
 }

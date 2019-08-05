@@ -13,7 +13,7 @@ const template = function (data: {[key: string]: any}) {
 export class Card extends Component {
     public template = template;
     public title: string = 'Card Title Goes Here';
-    public listComponents: any[] = [];
+    public childComponents: any[] = [];
     public list: any[] = [];
 
     constructor(options: {[key: string]: any} = {}) {
@@ -30,14 +30,16 @@ export class Card extends Component {
         this.initList(options.list, `CardList_${this.id}`);
     }
 
-    initList(list: any[], selector: string, listTemplate: any = ListItem, limit?: number | null): void {
+    initList(list: any[], selector: string, Item: any = ListItem, limit?: number | null): void {
+        const listContainer = document.getElementById(selector);
+        if (listContainer) listContainer.innerHTML = '';
         let counter = 0;
         for (let item of list) {
             if (limit !== null && counter === limit) {
                 break;
             }
-            const listItem = new listTemplate({selector: selector});
-            this.listComponents = Array().concat(this.listComponents, listItem);
+            const listItem = new Item({selector: selector});
+            this.childComponents = Array().concat(this.childComponents, listItem);
             listItem.init({item: item.name, apdex: item.apdex, version: item.version});
             counter++;
         }

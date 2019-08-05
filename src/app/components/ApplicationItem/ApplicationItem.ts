@@ -17,6 +17,7 @@ export class ApplicationItem extends ListItem {
 
     constructor(options: {[key: string]: any}) {
         super(options);
+        this.onClick = this.onClick.bind(this);
     }
 
     init(options: {[key: string]: any}) {
@@ -42,12 +43,21 @@ export class ApplicationItem extends ListItem {
         appElement.appendChild(this.element);;
     }
 
+    onClick(e: Event) {
+        e.preventDefault();
+        alert(`${this.item}\nRelease version: ${this.version}`);
+    }
+
     initListeners() {
         if (this.element) {
-            this.element.addEventListener('click', (e) => {
-                e.preventDefault();
-                alert(`${this.item}\nRelease version: ${this.version}`);
-            });
+            this.element.addEventListener('click', this.onClick);
+        }
+    }
+
+    removeListeners() {
+        console.log('removeListeners')
+        if (this.element) {
+            this.element.removeEventListener('click', this.onClick);
         }
     }
 }
