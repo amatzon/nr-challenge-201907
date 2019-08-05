@@ -1,0 +1,21 @@
+.listitem--application {
+    display: flex;
+    margin-bottom: 1.6rem;
+    cursor: pointer;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.listitem__index {
+    opacity: 0.62;
+    font-size: 1.3rem;
+    font-weight: bold;
+    line-height: 1.5;
+    flex: 0 0 5rem;
+}
+
+.listitem__name {
+    flex: 1;
+}

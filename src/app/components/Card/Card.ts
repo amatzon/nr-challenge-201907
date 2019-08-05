@@ -38,7 +38,7 @@ export class Card extends Component {
             }
             const listItem = new ApplicationItem({selector: selector});
             this.listComponents = Array().concat(this.listComponents, listItem);
-            listItem.init({item: item.name});
+            listItem.init({item: item.name, apdex: item.apdex, version: item.version});
             counter++;
         }
     }
