@@ -1,4 +1,5 @@
 import { Card } from '@/app/components/Card/Card';
+import { ApplicationItem } from '@/app/components/ApplicationItem/ApplicationItem';
 import './style.scss';
 
 const template = function (data: {[key: string]: any}) {
@@ -23,6 +24,10 @@ export class HostCard extends Card {
         this.templateData.title = options.title || this.title;
 
         this.render(this.templateData);
-        this.initList(this.list, `HostCardList_${this.id}`, 5);
+        this.initList(this.list, `HostCardList_${this.id}`, ApplicationItem, 5);
+    }
+
+    removeItem(appName: string) {
+        console.log('remove appname')
     }
 }

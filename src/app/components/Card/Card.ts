@@ -1,5 +1,5 @@
 import { Component } from '@/app/components/Component/Component';
-import { ApplicationItem } from '@/app/components/ApplicationItem/ApplicationItem';
+import { ListItem } from '@/app/components/ListItem/ListItem';
 
 const template = function (data: {[key: string]: any}) {
     return `
@@ -30,13 +30,13 @@ export class Card extends Component {
         this.initList(options.list, `CardList_${this.id}`);
     }
 
-    initList(list: any[], selector: string, limit: number | null = null): void {
+    initList(list: any[], selector: string, listTemplate: any = ListItem, limit?: number | null): void {
         let counter = 0;
         for (let item of list) {
             if (limit !== null && counter === limit) {
                 break;
             }
-            const listItem = new ApplicationItem({selector: selector});
+            const listItem = new listTemplate({selector: selector});
             this.listComponents = Array().concat(this.listComponents, listItem);
             listItem.init({item: item.name, apdex: item.apdex, version: item.version});
             counter++;
