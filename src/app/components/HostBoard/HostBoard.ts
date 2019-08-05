@@ -86,7 +86,7 @@ export class HostBoard extends Board {
         // There's no need to iterate over the full lists
         const foundInHosts: string[] = [];
         this.hostsNames.forEach((hostName) => {
-            const hostApps = this.topAppsByHosts[hostName];
+            let hostApps = this.appsByHosts[hostName];
             let appIndex = null;
             hostApps.forEach((app: Application, i) => {
                 if (app.name === appName) {
@@ -95,12 +95,16 @@ export class HostBoard extends Board {
                 }
             });
             if (appIndex !== null) {
+                // Remove app
                 hostApps.splice(appIndex, 1);
+                // Update top list
+                this.topAppsByHosts[hostName] = this.filterTopApps(hostApps);
             }
         });
 
         if (foundInHosts.length > 0) {
             console.info(`Removed successfully from these hosts: \n${foundInHosts.join('\n')}.`);
+            return;
         }
 
         console.info(`Could not find any app with the name ${appName}.`);
