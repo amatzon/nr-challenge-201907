@@ -13,6 +13,7 @@ export class ApplicationItem extends ListItem {
     public template = template;
     private element: HTMLElement | null = null;
     private version: number = 0;
+    private item: string = '';
 
     constructor(options: {[key: string]: any}) {
         super(options);
@@ -20,6 +21,7 @@ export class ApplicationItem extends ListItem {
 
     init(options: {[key: string]: any}) {
         this.version = options.version;
+        this.item = options.item;
         this.templateData.apdex = options.apdex;
         this.templateData.item = options.item;
         
@@ -44,7 +46,7 @@ export class ApplicationItem extends ListItem {
         if (this.element) {
             this.element.addEventListener('click', (e) => {
                 e.preventDefault();
-                alert(`${this.version}`);
+                alert(`${this.item}\nRelease version: ${this.version}`);
             });
         }
     }
