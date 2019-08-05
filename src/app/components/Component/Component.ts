@@ -1,4 +1,5 @@
 import { genetateID } from '@/app/helpers/helpers';
+import { getJSON } from '@/app/helpers/xhr'
 
 const template = function (data: {[key: string]: any}) {
     return `<div data-id="${data.id}"></div>`;
@@ -44,5 +45,9 @@ export class Component {
 
     getID(): number {
         return this.id;
+    }
+
+    loadData(path: string): Promise<any> {
+        return getJSON(path);
     }
 }
