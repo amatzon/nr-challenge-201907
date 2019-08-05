@@ -17,6 +17,7 @@ export class HostBoard extends Board {
     private data: Application[] = [];
     private hosts: string[] = [];
     private appsByHosts: {[key: string]: Application[]} = {};
+    private topAppsByHosts: {[key: string]: Application[]} = {};
     private childComponents: any[] = [];
 
     constructor(options: {[key: string]: any} = {}) {
@@ -40,20 +41,38 @@ export class HostBoard extends Board {
         this.hosts.forEach((hostName) => {
             const topApps = this.filterTopApps(this.appsByHosts[hostName]);
             const hostCard = new HostCard({selector: `HostBoardCards_${this.id}`});
+
+            this.topAppsByHosts[hostName] = topApps;
             this.childComponents = Array().concat(this.childComponents, hostCard);
             hostCard.init({title: hostName, list: topApps});
         });
 
-        // console.log('hosts', this.hosts);
-        // console.log('appsByHosts', this.appsByHosts);
-        console.log('this.childComponents', this.childComponents)
-
-        
+        this.exposeMethods();
     }
 
     onError(response: {[key: string]: any}): void {
         // no-op
         console.error(response);
+    }
+
+    private exposeMethods() {
+        (window as any).getTopAppsByHost = (hostName: string) => this.getTopAppsByHost(hostName);
+    }
+
+    private getTopAppsByHost(hostName: string = '') {
+        if (!hostName) {
+            console.error(`Can't retrieve top apps! Please provide a host name.`);
+            return;
+        }
+
+        if (!this.topAppsByHosts.hasOwnProperty(hostName)) {
+            console.error(`No host was found with name "${hostName}"!`);
+            return;
+        }
+
+        this.topAppsByHosts[hostName].forEach((app: Application, i) => {
+            console.log(`${i+1}. ${app.name}\n`);
+        });
     }
 
     private parseData(data: []) {
