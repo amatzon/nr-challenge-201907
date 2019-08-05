@@ -1,20 +1,28 @@
 .header {
     display: flex;
+    margin-bottom: 3rem;
 }
 
 .header__container {
-    display: inline-flex;
-    width: 90%;
+    flex: 1;
+    overflow: hidden;
 }
 
 .header__controls {
-    display: inline-flex;
-    width: 10%;
+    position: relative;
+    flex: 0 0 10rem;
     white-space: nowrap;
     text-align: right;
+    font-size: 1.2rem;
+    padding-left: 3rem;
+    box-sizing: content-box;
 
     & > label {
+        position: absolute;
+        bottom: 0;
+        right: 0;
         display: block;
+        line-height: 2.2;
     }
 }
 
@@ -23,10 +31,12 @@
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 1.8rem;
+    margin-bottom: 0;
 }
 
 .header__titlemain {
     font-size: 3.5rem;
+    padding-right: 0.5rem;
 }
 
 .header__subtitle {
