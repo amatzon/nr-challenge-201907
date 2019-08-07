@@ -13,6 +13,7 @@ This app was built with no development dependencies. I chose the tools which I'm
 2. **Yarn** for managing dependencies
 3. JS with **Typescript** for a better development experience and probably an even better fit for OO projects
 4. **SCSS** for styling
+5. **Jest** for tests because of better Typescript support
 
 ### Compatibility
 
@@ -110,6 +111,18 @@ yarn host
 
 #with npm
 npm run host
+```
+
+## Tests
+
+Basiv unit tests are provided for some methods as an example. Testing framework is Jest. Run unit tests:
+
+```
+# with yarn
+yarn unit:test
+
+# with npm
+npm run unit:test
 ```
 
 ## Contact

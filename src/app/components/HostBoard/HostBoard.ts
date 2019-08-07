@@ -1,6 +1,7 @@
 import { Application } from '@/app/types/Application';
 import { Board } from '@/app/components/Board/Board';
 import { HostCard } from '@/app/components/HostCard/HostCard';
+import { prepareHostsByApp, filterTopApps } from '@/app/helpers/helpers';
 import './style.scss';
 
 const template = function(data: {[key: string]: any}) {
@@ -32,14 +33,14 @@ export class HostBoard extends Board {
 
     onSuccess(response: {[key: string]: any}): void {
         this.data = response.data;
-        this.appsByHosts = this.prepareHosts(this.data);
+        this.appsByHosts = prepareHostsByApp(this.data);
 
         this.render(this.templateData);
 
         Object.keys(this.appsByHosts).forEach((hostName) => {
             const hostCard = new HostCard({selector: `HostBoardCards_${this.id}`});
             this.childComponents[`HostCard_${hostName}`] = hostCard;
-            hostCard.init({title: hostName, list: [...this.filterTopApps(this.appsByHosts[hostName])]});
+            hostCard.init({title: hostName, list: [...filterTopApps(this.appsByHosts[hostName])]});
         });
     }
 
@@ -65,7 +66,7 @@ export class HostBoard extends Board {
             return;
         }
 
-        const topAppsByHosts = this.filterTopApps(this.appsByHosts[hostName]);
+        const topAppsByHosts = filterTopApps(this.appsByHosts[hostName]);
 
         topAppsByHosts.forEach((app: Application, i) => {
             console.log(`${i+1}. ${app.name} (${app.apdex})\n`);
@@ -100,7 +101,7 @@ export class HostBoard extends Board {
         if (foundInHosts.length) {
             foundInHosts.forEach((hostName) => {
                 // Rerender Cards
-                this.updateCardList(hostName, this.filterTopApps(this.appsByHosts[hostName]));
+                this.updateCardList(hostName, filterTopApps(this.appsByHosts[hostName]));
             })
         } else {
             console.info(`Could not find any app with the name "${appName}".`);
@@ -131,11 +132,15 @@ export class HostBoard extends Board {
                 // Add app
                 this.appsByHosts[hostName] = [...appsByHost, app];
                 // Update rendered cards
-                this.updateCardList(hostName, this.filterTopApps(this.appsByHosts[hostName]));
+                this.updateCardList(hostName, filterTopApps(this.appsByHosts[hostName]));
                 return;
             } else {
                 // Create host with app if did not exist before
                 this.appsByHosts[hostName] = [app];
+                // Create new card
+                const hostCard = new HostCard({selector: `HostBoardCards_${this.id}`});
+                this.childComponents[`HostCard_${hostName}`] = hostCard;
+                hostCard.init({title: hostName, list: [app]});
             }
         });
     }
@@ -143,34 +148,5 @@ export class HostBoard extends Board {
     private updateCardList(hostName: string, list: Application[]) {
         const hostCard = this.childComponents[`HostCard_${hostName}`];
         if (hostCard) hostCard.updateList([...list]);
-    }
-
-    private prepareHosts(data: Application[]) {
-        const appsByHosts: {[key: string]: Application[]} = {};
-        for (let i = 0, l = data.length; i < l; i++) {
-            const application = data[i];
-            const hosts = data[i].host;
-            if (hosts.length > 0) {
-                for (let j = 0, k = hosts.length; j < k; j++) {
-                    const hostName = hosts[j];
-                    if (appsByHosts.hasOwnProperty(hostName)) {
-                        appsByHosts[hostName].push(application);
-                    } else {
-                        appsByHosts[hostName] = [application];
-                    } 
-                }
-            }
-        }
-
-        return appsByHosts;
-    }
-
-    private filterTopApps(apps: Application[]) {
-        let appsOrdered = [...apps];
-        appsOrdered.sort((a, b) => {
-            return b.apdex - a.apdex;
-        });
-        appsOrdered = appsOrdered.slice(0, 25);
-        return appsOrdered;
     }
 }
