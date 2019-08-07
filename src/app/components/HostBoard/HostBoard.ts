@@ -107,6 +107,8 @@ export class HostBoard extends Board {
             this.appsByHosts[hostName] = appsByHost;
         });
 
+        // TODO: Here we should check if this.appsByHosts[hostName] is empty and remove card from DOM
+
         if (foundInHosts.length) {
             foundInHosts.forEach((hostName) => {
                 // Rerender Cards
