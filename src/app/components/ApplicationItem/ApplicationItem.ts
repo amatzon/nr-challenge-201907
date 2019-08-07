@@ -55,7 +55,6 @@ export class ApplicationItem extends ListItem {
     }
 
     removeListeners() {
-        console.log('removeListeners')
         if (this.element) {
             this.element.removeEventListener('click', this.onClick);
         }

@@ -1,8 +1,8 @@
 export type Application = {
     name: string
-    contributors: []
+    contributors: string[]
     version: number
     apdex: number
-    host: []
-    id: number
+    host: string[]
+    id?: number
 }

@@ -19,7 +19,6 @@ export class Card extends Component {
     constructor(options: {[key: string]: any} = {}) {
         super(options);
         this.templateData.title = options.title;
-        this.templateData.list = options.list;
     }
 
     init(options: {[key: string]: any} = {}) {
