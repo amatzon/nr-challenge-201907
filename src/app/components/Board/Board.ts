@@ -10,6 +10,7 @@ const template = function(data: {[key: string]: any}) {
 };
 
 export class Board extends Component {
+    public template = template;
     public cards: string[] = [];
     
     constructor(options: {[key: string]: any}) {

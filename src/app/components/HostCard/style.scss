@@ -1,15 +1,7 @@
 .card--host {
     padding: 3rem;
     background-color: #ffffff;
-    margin-bottom: 3rem;
-
-    &:last-child {
-        margin-bottom: 0;
-    }
-
-    // @media screen and (min-width: $break-large) {
-        // max-width: 37.5rem;
-    // }
+    box-sizing: border-box;
 }
 
 .card__title {
