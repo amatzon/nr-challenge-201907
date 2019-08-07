@@ -1,5 +1,6 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const getConfig = () => {
     return {
@@ -7,7 +8,7 @@ const getConfig = () => {
             path.resolve(__dirname, 'src', 'app', 'index.ts')
         ],
         output: {
-            path: path.resolve(__dirname, 'dist'),
+            path: path.resolve(__dirname, 'public'),
             publicPath: '/',
             filename: '[name].[hash].js',
         },
@@ -24,10 +25,13 @@ const getConfig = () => {
                     exclude: /node_modules/,
                 },
                 {
-                    test: /\.scss$/,
+                    test: /\.(sa|sc|c)ss$/,
                     use: [
-                        'style-loader',
+                        {
+                            loader: MiniCssExtractPlugin.loader
+                        },
                         'css-loader',
+                        // 'style-loader',
                         'sass-loader',
                     ]
                 }
@@ -41,10 +45,13 @@ const getConfig = () => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                template: path.resolve(__dirname, 'public', 'index.html'),
+                template: path.resolve(__dirname, 'src', 'index.html'),
                 filename: 'index.html',
                 inject: true,
-            })
+            }),
+            new MiniCssExtractPlugin({
+                filename: '[name].[hash].css',
+            }),
         ]
     };
 };
