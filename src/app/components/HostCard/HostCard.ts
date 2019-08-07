@@ -28,6 +28,11 @@ export class HostCard extends Card {
         this.initList(this.list, `HostCardList_${this.id}`, ApplicationItem, 5);
     }
 
+    /**
+     * Updates the list with new data received
+     * Removes event listeners before removing DOM
+     * @param list New list of applications
+     */
     updateList(list: Application[]) {
         this.list = list;
         this.childComponents.forEach((appItem) => {

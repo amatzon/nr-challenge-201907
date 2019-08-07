@@ -5,12 +5,15 @@ const template = function (data: {[key: string]: any}) {
     return `<div data-id="${data.id}"></div>`;
 };
 
+/**
+ * Component Class
+ * Base component class for all components
+ */
 export class Component {
     public mountPoint: string = '';
     public template = template;
     public id: number = 0;
     public templateData: {[key: string]: any} = {};
-    // public childComponents: {[key: string]: Component} = {};
 
     constructor(options: {[key: string]: any}) {
         this.setMount(options.selector);

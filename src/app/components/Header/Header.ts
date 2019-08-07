@@ -20,6 +20,10 @@ const template = function (data: {[key: string]: any}) {
     `;
 };
 
+/**
+ * Header Class
+ * @extends Component
+ */
 export class Header extends Component {
     public template = template;
     private title: string = 'Header Title Goes Here';
@@ -38,14 +42,24 @@ export class Header extends Component {
         this.initListeners();
     }
 
+    /**
+     * Add event listeners 
+     */
     initListeners(): void {
         if (this.checkboxElem) {
             this.checkboxElem.addEventListener('change', this.onChange);
         }
     }
 
+    /**
+     * Toggle grid/list view
+     * @param e Change event
+     */
     onChange(e: Event): void {
         e.preventDefault();
+        // Ideally should be avoided to modify another components properties
+        // Better way would be a simple event bus implementation here emitting
+        // an event, and other component would listen and modify its owns props
         const boardElem = document.getElementsByClassName('board__cards');
         boardElem[0].classList.toggle('asList');
     }

@@ -9,6 +9,10 @@ const template = function(data: {[key: string]: any}) {
     `;
 };
 
+/**
+ * Board Class
+ * @extends Component
+ */
 export class Board extends Component {
     public template = template;
     public cards: string[] = [];

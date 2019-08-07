@@ -28,7 +28,14 @@ export class Card extends Component {
         this.render(this.templateData);
         this.initList(options.list, `CardList_${this.id}`);
     }
-
+    
+    /**
+     * Our card expects a customisable list to display. List items become the child components
+     * @param list List of objects to create from
+     * @param selector Custom template DOM selector
+     * @param Item Custom template 
+     * @param limit Limit the list of items to display
+     */
     initList(list: any[], selector: string, Item: any = ListItem, limit?: number | null): void {
         const listContainer = document.getElementById(selector);
         if (listContainer) listContainer.innerHTML = '';

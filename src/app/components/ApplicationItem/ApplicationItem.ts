@@ -9,6 +9,11 @@ const template = function(data: {[key: string]: any}) {
     `;
 }
 
+/**
+ * ApplicationItem
+ * @extends ListItem
+ * @extends Component
+ */
 export class ApplicationItem extends ListItem {
     public template = template;
     private element: HTMLElement | null = null;
@@ -30,6 +35,11 @@ export class ApplicationItem extends ListItem {
         this.initListeners();
     }
 
+    /**
+     * Overwrite render function from Component
+     * An HMTL Element needs to be create to be able to attach event listeners
+     * @param data 
+     */
     render(data: {[key: string]: any} = {}): void {
         const appElement = document.getElementById(this.mountPoint);
         if (!appElement) {

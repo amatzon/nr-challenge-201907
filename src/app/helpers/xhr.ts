@@ -1,3 +1,8 @@
+/**
+ * Simplified XHR to request JSON
+ * Returns a promise
+ * @param path Path to API/JSON
+ */
 export const getJSON = (path: string) => {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();

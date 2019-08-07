@@ -13,12 +13,17 @@ const template = function (data: {[key: string]: any}) {
     `;
 };
 
+/**
+ * Application Class
+ * @extends Component
+ */
 export class App extends Component {
     public template = template;
     public childComponents: {[key: string]: Component} = {};
 
     constructor(options: {[key: string]: any}) {
         super(options);
+        // Cache child component as instances
         this.childComponents = {
             Header: new Header({selector: `AppHeader_${this.id}`}),
             HostBoard: new HostBoard({selector: `AppContent_${this.id}`}),
@@ -30,6 +35,7 @@ export class App extends Component {
 
         this.loadUserData().then(
             (response) => {
+                // Init Header only after user data loads because we need email address
                 this.childComponents.Header.init({
                     title: response.data.title,
                     subtitle: `for user ${response.data.email}`,
@@ -37,9 +43,13 @@ export class App extends Component {
             }
         );
 
+        // Init the Board synchronously 
         this.childComponents.HostBoard.init();
     }
 
+    /**
+     * Mock loading user data from API
+     */
     private loadUserData(): Promise<any> {
         return new Promise((resolve) => {
             resolve({

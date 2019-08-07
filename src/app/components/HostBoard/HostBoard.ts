@@ -12,6 +12,11 @@ const template = function(data: {[key: string]: any}) {
     `;
 };
 
+/**
+ * HostBoard
+ * @extends Board
+ * @extends Component
+ */
 export class HostBoard extends Board {
     public template = template;
     private jsonPath: string = '/data/host-app-data.json';
@@ -37,6 +42,7 @@ export class HostBoard extends Board {
 
         this.render(this.templateData);
 
+        // Go through all hosts and create a Card for them
         Object.keys(this.appsByHosts).forEach((hostName) => {
             const hostCard = new HostCard({selector: `HostBoardCards_${this.id}`});
             this.childComponents[`HostCard_${hostName}`] = hostCard;
@@ -49,6 +55,9 @@ export class HostBoard extends Board {
         console.error(response);
     }
 
+    /**
+     * Expose methods on window, for testing only
+     */
     private exposeMethods() {
         (window as any).getTopAppsByHost = (hostName: string) => this.getTopAppsByHost(hostName);
         (window as any).removeAppFromHosts = (appName: string) => this.removeAppFromHosts(appName);
@@ -145,6 +154,11 @@ export class HostBoard extends Board {
         });
     }
 
+    /**
+     * Update child component with new list and rerender
+     * @param hostName 
+     * @param list 
+     */
     private updateCardList(hostName: string, list: Application[]) {
         const hostCard = this.childComponents[`HostCard_${hostName}`];
         if (hostCard) hostCard.updateList([...list]);
