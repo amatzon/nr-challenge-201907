@@ -24,6 +24,48 @@ Typescript output is set to **`ES5`** so that should be sufficient for most olde
 
 To be able to view the project you need to point your web server to `public/index.html`. This folder contains the dist version of the project for easier testing.
 
+### Test methods
+
+All required methods are exposed via **`window`** object for easy access.
+
+### `getTopAppsByHost`
+
+Method returns the top 25 applications by host. Logs output back to the console. Example:
+
+```
+window.getTopAppsByHost('1d717554-bf17.sydnie.name')
+```
+
+*Possible improvements: cache top apps by host if this is a frequent call. Update the list after adding or removing apps.*
+
+### `removeAppFromHosts`
+
+Method removes an application from all hosts where it occurs. Pass the exact *name* of the application you want to remove. Example: 
+
+```
+window.removeAppFromHosts('Practical Metal Computer - Auer LLC, Inc')
+```
+
+### `addAppToHosts`
+
+Method to add an application to any hosts. Example: 
+
+```
+window.addAppToHosts(
+    {
+        name: 'Test App Name - New Relic, Inc.',
+        contributors: [],
+        apdex: 98,
+        version: 1,
+        host: [
+            '7e6272f7-098e.dakota.biz',
+            '95b346a0-17f4.abbigail.name'
+        ]
+    }
+)
+```
+
+
 ## Development
 
 Development is using Webpack's dev server. To run in development mode, run:
