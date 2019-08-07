@@ -1,4 +1,4 @@
-import { genetateID } from '@/app/helpers/helpers';
+import { generateID } from '@/app/helpers/helpers';
 import { getJSON } from '@/app/helpers/xhr'
 
 const template = function (data: {[key: string]: any}) {
@@ -40,7 +40,7 @@ export class Component {
     }
 
     setID(): void {
-        this.id = genetateID();
+        this.id = generateID();
     }
 
     getID(): number {
